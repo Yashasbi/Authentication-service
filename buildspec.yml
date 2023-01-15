@@ -2,8 +2,9 @@ version: 0.2
 
 phases:
   install:
-    runtime-versions:
-      java: corretto17
+    commands:
+      - yum install java-17-amazon-corretto -y
+      - alternatives --set java /usr/lib/jvm/java-17-amazon-corretto/bin/java
   build:
     commands:
       - echo Build started on `date`
