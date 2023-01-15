@@ -2,7 +2,7 @@ package com.authorizationservice.service;
 
 import com.authorizationservice.exception.InvalidSessionIdException;
 import com.authorizationservice.exception.UnAuthorizedException;
-import com.authorizationservice.model.Session;
+import com.authorizationservice.model.entities.Session;
 import com.authorizationservice.model.output.AuthenticatedUser;
 import com.authorizationservice.repository.SessionRepository;
 import com.authorizationservice.utils.ApiKeyValidator;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Slf4j
@@ -24,26 +25,34 @@ public class SessionService {
     @Autowired
     ApiKeyValidator apiKeyValidator;
 
-    public UUID createSession(Session inputSession) {
+    public UUID createSession(UUID userId) {
 
-        Session createdSession = sessionRepository.save(inputSession);
-        return createdSession.getSessionId();
+        Session session = Session.builder()
+                .userId(userId)
+                .sessionId(UUID.randomUUID())
+                .createdAt(new Date())
+                .build();
+
+        sessionRepository.saveSession(session);
+
+        return session.getSessionId();
     }
+
 
 
     public void deleteSession(UUID sessionId) {
         log.info("Deleting session with id {}", sessionId);
-        try {
-            sessionRepository.deleteById(sessionId);
-        }
-        catch(EmptyResultDataAccessException entityNotFoundException) {
-            throw new InvalidSessionIdException("The given sessionId " +sessionId + " does not exists in db");
-        }
+//        try {
+//            sessionRepository.deleteById(sessionId);
+//        }
+//        catch(EmptyResultDataAccessException entityNotFoundException) {
+//            throw new InvalidSessionIdException("The given sessionId " +sessionId + " does not exists in db");
+//        }
     }
 
     public Session getSessionById(UUID sessionId) {
         log.info("Getting session for sessionId {}", sessionId);
-        return sessionRepository.getReferenceById(sessionId);
+        return sessionRepository.getSession(sessionId);
     }
 
 
@@ -56,7 +65,7 @@ public class SessionService {
             log.info("Validated API key for session-id " +sessionId);
 
             try {
-                Session session = sessionRepository.getReferenceById(sessionId);
+                Session session = sessionRepository.getSession(sessionId);
                 return AuthenticatedUser.builder()
                         .userId(session.getUserId())
                         .sessionId(session.getSessionId())
@@ -72,7 +81,7 @@ public class SessionService {
         }
     }
 
-    public Session findSessionByUser(final String userId) {
-          return sessionRepository.findSessionByUser(userId);
-    }
+//    public Session findSessionByUser(final String userId) {
+//          return sessionRepository.findSessionByUser(userId);
+//    }
 }

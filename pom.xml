@@ -43,7 +43,39 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.mindrot.bcrypt/bcrypt -->
+		<dependency>
+			<groupId>at.favre.lib</groupId>
+			<artifactId>bcrypt</artifactId>
+			<version>0.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws.secretsmanager</groupId>
+			<artifactId>aws-secretsmanager-jdbc</artifactId>
+			<version>1.0.8</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.amazonaws/elasticache-java-cluster-client -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>elasticache-java-cluster-client</artifactId>
+			<version>1.2.0</version>
+		</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>allow-snapshots</id>
+			<activation><activeByDefault>true</activeByDefault></activation>
+			<repositories>
+				<repository>
+					<id>snapshots-repo</id>
+					<url>https://aws.oss.sonatype.org/content/repositories/snapshots</url>
+					<releases><enabled>false</enabled></releases>
+					<snapshots><enabled>true</enabled></snapshots>
+				</repository>
+			</repositories>
+		</profile>
+	</profiles>
 
 	<build>
 		<plugins>
@@ -55,6 +87,10 @@
 						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
+						</exclude>
+						<exclude>
+							<artifactId>tomcat-embed-el</artifactId>
+							<groupId>org.apache.tomcat.embed</groupId>
 						</exclude>
 					</excludes>
 				</configuration>

@@ -1,12 +1,12 @@
-package com.authorizationservice.model;
+package com.authorizationservice.model.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 
-
 import java.sql.Types;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -15,7 +15,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "user")
-
 public class User {
 
     @Id
@@ -35,11 +34,11 @@ public class User {
 
     private Date createdAt;
 
-//    @OneToOne(mappedBy = "userId", cascade = CascadeType.ALL)
-//    private Session session;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Role> roles;
 
     @PrePersist
-    private void onCreate() {
+    void intialize() {
         createdAt = new Date();
     }
 

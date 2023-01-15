@@ -1,6 +1,7 @@
 package com.authorizationservice.controller;
 
 import com.authorizationservice.exception.*;
+import com.authorizationservice.model.entities.User;
 import com.authorizationservice.model.input.LoginInput;
 import com.authorizationservice.model.input.UserInput;
 import com.authorizationservice.model.output.AuthenticatedUser;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -32,6 +34,7 @@ public class UserController {
     @PostMapping("/v1/user/signup")
     public ResponseEntity<String> signUpUser(@RequestBody UserInput user) {
 
+        System.out.println("User is " + user);
         if(!inputValidations.validateEmailId(user.getEmailId())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Enter a valid emailId");
         }
@@ -101,4 +104,17 @@ public class UserController {
         }
         return responseEntity;
     }
+    @GetMapping("/v1/get/user/{userId}")
+    public User getUser(@PathVariable UUID userId, @RequestParam Map<String, Object> queryMap) {
+        User user = userService.getUserById(userId);
+        System.out.println("User is " +user);
+        System.out.println("Map size is " + queryMap.size());
+
+        for(Map.Entry<String, Object> entry : queryMap.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
+        return user;
+    }
+
+
 }
