@@ -4,7 +4,7 @@ phases:
   install:
     commands:
       - yum install java-17-amazon-corretto -y
-      - alternatives --set java /usr/lib/jvm/java-11-amazon-corretto.x86_64/bin/java
+      - alternatives --set java /usr/lib/jvm/java-17-amazon-corretto.x86_64/bin/java
       - java --version
   build:
     commands:
