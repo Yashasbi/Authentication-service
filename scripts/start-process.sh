@@ -1,3 +1,3 @@
 #!/bin/bash
 
-java -jar /tmp/AuthorizationService-1.0.jar >> /tmp/log.txt
+java -DDB_NAME=$DB_NAME -DMYSQL_DB_ENDPOINT=$MYSQL_DB_ENDPOINT -DMYSQL_DB_PORT=$MYSQL_DB_PORT -DSECRETS_NAME=$SECRETS_NAME -DSESSION_CACHSION_CACHE_PORT  -jar /tmp/AuthorizationService-1.0.jar >> /tmp/log.txt
