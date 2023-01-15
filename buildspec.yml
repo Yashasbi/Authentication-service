@@ -1,6 +1,9 @@
 version: 0.2
 
 phases:
+  env:
+    variables:
+      JAVA_HOME:"/usr/lib/jvm/java-17-amazon-corretto.x86_64"
   install:
     commands:
       - yum install java-17-amazon-corretto -y
@@ -9,7 +12,6 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - EXPORT JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto.x86_64
       - java --version
       - mvn -version
       - mvn package
