@@ -1,0 +1,23 @@
+version: 0.0
+os: linux
+files:
+  - source: ./AuthorizationService-1.0.jar
+    destination: /tmp
+
+hooks:
+  BeforeInstall:
+    - location: install_dependencies.sh
+      timeout: 300
+      runas: root
+  ApplicationStop:
+    - location: stop-process.sh
+      timeout: 90
+      runas: root
+  ApplicationStart:
+    - location: start-process.sh
+      timeout: 90
+      runas: root
+  ValidateService:
+    - location: health-check.sh
+      timeout: 90
+      runas: root

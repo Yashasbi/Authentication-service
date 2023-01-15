@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+  build:
+    commands:
+      - echo Build started on `date`
+      - mvn package
+artifacts:
+  files:
+    - target/AuthorizationService-1.0.jar
+    - appspec.yml
+    - scripts/start-process.sh
+    - scripts/stop-process.sh
+    - scripts/install_dependencies.sh
+    - scripts/health-check.sh
+  discard-paths: yes
