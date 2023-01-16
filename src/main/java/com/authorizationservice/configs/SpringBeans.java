@@ -12,8 +12,11 @@ public class SpringBeans {
 
     @Bean
     public MemcachedClient getMemcachedClient() throws IOException {
-        String endPoint = "sessions-cache.4fhyap.cfg.aps1.cache.amazonaws.com";
-        int port = 11211;
+
+        String endPoint = System.getenv("SESSION_CACHE_ENDPOINT");
+        int port = Integer.parseInt(System.getenv("SESSION_CACHE_PORT"));
+
         return new MemcachedClient(new InetSocketAddress(endPoint, port));
+
     }
 }
